@@ -1,0 +1,33 @@
+[user]
+	name = Yousuke Fujigaya
+	email = fujigaya.yousuke@gmail.com
+[init]
+	defaultBranch = main
+[alias]
+	s = status -sb
+	d = diff
+	a = add
+	aa = add -A
+	b = branch
+	co = checkout
+	cob = checkout -b
+	c = commit
+	cm = commit -m
+	ca = commit --amend
+	f = fetch
+	fup = fetch upstream
+	fz = fuzzy
+	tree = log --graph --all --format=\"%x09%C(cyan bold)%an%Creset%x09%C(yellow)%h%Creset %C(magenta reverse)%d%Creset %s\"
+[core]
+	excludesFile = ~/.gitignore_global
+[pull]
+	rebase = false
+[ghq]
+	root = ~/PracticeSpace
+	root = ~/GitHub
+	root = ~/projects/src
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

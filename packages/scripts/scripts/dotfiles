@@ -1,0 +1,121 @@
+#!/bin/sh
+
+set -e
+
+GHQ_ROOT_PATH=~/projects/src
+GIT_CLONE_PATH="$GHQ_ROOT_PATH"/github.com/ofujigaya
+STOW_PACKAGES_PATH="$GIT_CLONE_PATH"/dotfiles/packages
+
+unlink_packages=
+for i in "$@"; do
+    case "$i" in
+    -s | --skip-apps)
+        skip_apps=1
+        shift
+        ;;
+    -u=* | --unlink=*)
+        unlink_packages="${i#*=}"
+        shift
+        ;;
+    *) ;;
+    esac
+done
+
+log() {
+    message=$1
+    echo 📌 "$message"
+}
+
+is_file() {
+    path="$1"
+    [ -f "$path" ]
+}
+
+is_dir() {
+    path="$1"
+    [ -d "$path" ]
+}
+
+ensure_dir() {
+    path="$1"
+    if ! is_dir "$path"; then
+        mkdir -p "$path"
+    fi
+}
+
+if [ -n "$unlink_packages" ]; then
+    log 'Unlinking dotfiles...'
+    stow -vD -d "$STOW_PACKAGES_PATH" -t ~ "$unlink_packages"
+    exit
+fi
+
+if ! is_file /opt/homebrew/bin/brew; then
+    log 'Setup Homebrew'
+    arch -arm64e /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+fi
+
+ensure_dir "$GIT_CLONE_PATH"
+
+if ! is_dir "$GIT_CLONE_PATH"/dotfiles; then
+    log 'Clone dotfiles'
+    cd $GIT_CLONE_PATH
+    git clone git@github.com:ofujigaya/dotfiles.git
+fi
+
+if [ ! "$skip_apps" ]; then
+    log 'Update homebrew'
+    brew update
+    log 'Now Installing Apps and CLIs...'
+    brew bundle -v --file="$GIT_CLONE_PATH"/dotfiles/packages/homebrew/.Brewfile
+fi
+
+if [ ! -d ~/.zinit/bin ]; then
+    cd ~
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+fi
+
+log 'Linking dotfiles...'
+ensure_dir ~/.config/peco
+# ensure_dir ~/.config/starship
+# ensure_dir ~/.config/yarn/global
+
+stow -vd "$STOW_PACKAGES_PATH" -t ~ $(ls $STOW_PACKAGES_PATH)
+
+log 'Upgrade Apps and CLIs'
+brew upgrade
+
+log 'Update .Brewfile'
+brew bundle dump -f --global
+
+### asdf Install Script
+for plugin in $(awk '{print $1}' ~/.tool-versions); do
+    if ! is_dir ~/.asdf/plugins/"$plugin"; then
+        asdf plugin add "$plugin"
+    fi
+done
+
+is_runtime_versions_changed() {
+    plugin="$1"
+    specified=$(grep "$plugin" ~/.tool-versions | awk '{$1=""; print $0}')
+    installed=$(asdf list "$plugin" 2>&1)
+
+    is_changed=
+    for version in $specified; do
+        match=$(echo "$installed" | grep "$version")
+        [ -z "$match" ] && is_changed=1
+    done
+
+    [ "$is_changed" ]
+}
+
+for plugin in $(asdf plugin list); do
+    if is_runtime_versions_changed "$plugin"; then
+        if [ "$plugin" = nodejs ]; then
+            log 'Import release team keyring for Node.JS'
+            bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-previous-release-team-keyring'
+        fi
+
+        log 'Install runtime: $plugin'
+        asdf install "$plugin"
+    fi
+done

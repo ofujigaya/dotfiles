@@ -1,0 +1,11 @@
+{
+  "Use256Color": true,
+  "Keymap": {
+    "C-k": "peco.SelectUp",
+    "C-j": "peco.SelectDown"
+  },
+  "Style": {
+    "Selected": ["underline", "on_255", "black"],
+    "Matched": ["green", "on_black"]
+  }
+}
