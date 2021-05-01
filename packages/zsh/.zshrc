@@ -1,8 +1,8 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-GHQ_ROOT_PATH=~/projects/src
+GHQ_ROOT_PATH=~/Projects/src
 GIT_CLONE_PATH="$GHQ_ROOT_PATH"/github.com/ofujigaya
 STOW_PACKAGES_PATH="$GIT_CLONE_PATH"/dotfiles/packages
 
@@ -26,7 +26,7 @@ export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="/opt/homebrew/bin/yarn:$PATH"
 export PATH="$HOME/.anyenv/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/git-fuzzy/bin:$PATH"
+export PATH="$HOME/src/github.com/bigH/git-fuzzy/bin:$PATH"
 
 # Homebrew auto update
 export HOMEBREW_NO_AUTO_UPDATE=1
@@ -40,7 +40,6 @@ eval "$(direnv hook zsh)"
 # asdf
 . /opt/homebrew/opt/asdf/asdf.sh
 
-
 ### git-fuzzy ###
 export GF_BASE_REMOTE=upstream
 export GF_BASE_BRANCH=main
@@ -49,12 +48,18 @@ export GF_BASE_BRANCH=main
 # Auto suggestion
 autoload -Uz compinit
 compinit -C -u
-
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 setopt list_packed
-# autoload colors
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*:default' menu select=1
+
+# GitHub CLI
+eval "$(gh completion -s zsh)"
+
+# colors
+eval $(gdircolors $HOME/.colors/solarized/dircolors.ansi-dark)
+if [ -n "$LS_COLORS" ]; then
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+    else zstyle ':completion:*' list-colors ''
+fi
 
 ### option ###
 setopt auto_cd
@@ -105,50 +110,50 @@ zinit light zsh-users/zsh-completions
 ### Configuration for peco
 ## コマンド履歴検索
 function peco-history-selection() {
-  BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
-  CURSOR=$#BUFFER
-  zle reset-prompt
+    BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+    CURSOR=$#BUFFER
+    zle reset-prompt
 }
 zle -N peco-history-selection
 bindkey '^R' peco-history-selection
 
 ## コマンド履歴からディレクトリ検索・移動
 if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]]; then
-  autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
-  add-zsh-hook chpwd chpwd_recent_dirs
-  zstyle ':completion:*' recent-dirs-insert both
-  zstyle ':chpwd:*' recent-dirs-default true
-  zstyle ':chpwd:*' recent-dirs-max 1000
-  zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/chpwd-recent-dirs"
+    autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+    add-zsh-hook chpwd chpwd_recent_dirs
+    zstyle ':completion:*' recent-dirs-insert both
+    zstyle ':chpwd:*' recent-dirs-default true
+    zstyle ':chpwd:*' recent-dirs-max 1000
+    zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/chpwd-recent-dirs"
 fi
 function peco-cdr () {
-  local selected_dir="$(cdr -l | sed 's/^[0-9]* *//' | peco)"
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
+    local selected_dir="$(cdr -l | sed 's/^[0-9]* *//' | peco)"
+    if [ -n "$selected_dir" ]; then
+        BUFFER="cd ${selected_dir}"
+        zle accept-line
+    fi
 }
 zle -N peco-cdr
 bindkey '^E' peco-cdr
 
 ## カレントディレクトリ以下のディレクトリ検索・移動
 function find_cd() {
-  local selected_dir=$(find . -type d | peco)
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
+    local selected_dir=$(find . -type d | peco)
+    if [ -n "$selected_dir" ]; then
+        BUFFER="cd ${selected_dir}"
+        zle accept-line
+    fi
 }
 zle -N find_cd
 bindkey '^X' find_cd
 
 ## gitローカルリポジトリ検索・移動
 function peco-src () {
-  local selected_dir=$(ghq list -p | peco)
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
+    local selected_dir=$(ghq list -p | peco)
+        if [ -n "$selected_dir" ]; then
+            BUFFER="cd ${selected_dir}"
+            zle accept-line
+        fi
 }
 zle -N peco-src
 bindkey '^G' peco-src

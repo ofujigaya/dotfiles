@@ -1,9 +1,7 @@
 syntax on
-colorscheme iceberg
+colorscheme github
 set history=10000
-set cursorline
 set whichwrap=b,s,h,l,<,>,[,],~
-set number
 set ignorecase
 set smartcase
 set virtualedit=onemore

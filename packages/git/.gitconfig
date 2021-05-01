@@ -1,33 +1,35 @@
 [user]
-	name = Yousuke Fujigaya
-	email = fujigaya.yousuke@gmail.com
+    name = Yousuke Fujigaya
+    email = fujigaya.yousuke@gmail.com
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [alias]
-	s = status -sb
-	d = diff
-	a = add
-	aa = add -A
-	b = branch
-	co = checkout
-	cob = checkout -b
-	c = commit
-	cm = commit -m
-	ca = commit --amend
-	f = fetch
-	fup = fetch upstream
-	fz = fuzzy
-	tree = log --graph --all --format=\"%x09%C(cyan bold)%an%Creset%x09%C(yellow)%h%Creset %C(magenta reverse)%d%Creset %s\"
+    s = status -sb
+    d = diff
+    a = add
+    aa = add -A
+    b = branch
+    co = checkout
+    cob = checkout -b
+    c = commit
+    cm = commit -m
+    ca = commit --amend
+    f = fetch
+    fup = fetch upstream
+    fz = fuzzy
+    tree = log --graph --all --format=\"%x09%C(cyan bold)%an%Creset%x09%C(yellow)%h%Creset %C(magenta reverse)%d%Creset %s\"
 [core]
-	excludesFile = ~/.gitignore_global
+    excludesFile = ~/.gitignore_global
 [pull]
-	rebase = false
+    rebase = false
+[ghq "https://git.ofujigaya.com/"]
+    root = ~/Projects/practice
+    root = ~/Projects/private
+    root = ~/Projects/src
 [ghq]
-	root = ~/PracticeSpace
-	root = ~/GitHub
-	root = ~/projects/src
+    root = ~/src
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
