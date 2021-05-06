@@ -22,7 +22,7 @@
     excludesFile = ~/.gitignore_global
 [pull]
     rebase = false
-[ghq "https://git.ofujigaya.com/"]
+[ghq "https://github.com/ofujigaya"]
     root = ~/Projects/practice
     root = ~/Projects/private
     root = ~/Projects/src

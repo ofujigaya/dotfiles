@@ -128,10 +128,11 @@ if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]
 fi
 function peco-cdr () {
     local selected_dir="$(cdr -l | sed 's/^[0-9]* *//' | peco)"
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
+        if [ -n "$selected_dir" ]; then
+            BUFFER="cd ${selected_dir}"
+            zle accept-line
+        fi
+    zle clear-screen
 }
 zle -N peco-cdr
 bindkey '^E' peco-cdr
@@ -139,21 +140,23 @@ bindkey '^E' peco-cdr
 ## カレントディレクトリ以下のディレクトリ検索・移動
 function find_cd() {
     local selected_dir=$(find . -type d | peco)
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
+        if [ -n "$selected_dir" ]; then
+            BUFFER="cd ${selected_dir}"
+            zle accept-line
+        fi
+    zle clear-screen
 }
 zle -N find_cd
 bindkey '^X' find_cd
 
 ## gitローカルリポジトリ検索・移動
 function peco-src () {
-    local selected_dir=$(ghq list -p | peco)
+    local selected_dir=$(ghq list -p | peco --prompt "REPOSITORY >" --query "$LBUFFER")
         if [ -n "$selected_dir" ]; then
             BUFFER="cd ${selected_dir}"
             zle accept-line
         fi
+    zle clear-screen
 }
 zle -N peco-src
 bindkey '^G' peco-src
