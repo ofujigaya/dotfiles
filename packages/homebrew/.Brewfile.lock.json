@@ -2,25 +2,28 @@
   "entries": {
     "tap": {
       "homebrew/bundle": {
-        "revision": "30944b1a1ff672300855c4fcb4a5e660de149702"
+        "revision": "c786ab13fc24f373225c399941bdb95358676e01"
       },
       "homebrew/cask": {
-        "revision": "bdb866f4fc20c9656609da250d227b511fc37c0c"
+        "revision": "cde861e8aede003dd685233dcfeee20e75e7fc3c"
       },
       "homebrew/cask-versions": {
-        "revision": "0e653103b94a70bbac477ea8ac34ad154812bcb2"
+        "revision": "3b025d3c9b020b754e9428b69f5b88cdea30ee35"
       },
       "homebrew/core": {
-        "revision": "5a0721783a5e8d6709340be6331d978950c68320"
+        "revision": "5741ae3fecc5cabeff83576afcbcd68224ab6c76"
       },
       "homebrew/services": {
-        "revision": "24795da951abb18c067dd4f525daaf9db8ce3a71"
+        "revision": "01ee8115926aaf78739d9149226c9ccf31e57812"
       },
       "romkatv/powerlevel10k": {
         "revision": "d2a7a4e37119bb9933c4283334475fca926d2fee"
       },
       "github/gh": {
         "revision": "209f59cda890de69b74c224982591642c21323d3"
+      },
+      "homebrew/cask-fonts": {
+        "revision": "9109a71902f61425cbedb59dc796b99e26ee50f8"
       }
     },
     "brew": {
@@ -533,7 +536,17 @@
       },
       "asdf": {
         "version": "0.8.0_1",
-        "bottle": false
+        "bottle": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "all": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/asdf/blobs/sha256:24d40cb939c41de5c2ee5f7e52aa631884d56a0566cfc65a63bf3ddb42344d24",
+              "sha256": "24d40cb939c41de5c2ee5f7e52aa631884d56a0566cfc65a63bf3ddb42344d24"
+            }
+          }
+        }
       },
       "coreutils": {
         "version": "8.32",
@@ -643,7 +656,7 @@
         }
       },
       "bettertouchtool": {
-        "version": "3.561-1701",
+        "version": "3.562-1702",
         "options": {
           "full_name": "bettertouchtool"
         }
@@ -661,7 +674,7 @@
         }
       },
       "github": {
-        "version": "2.8.0-853674e1",
+        "version": "2.8.1-717be06b",
         "options": {
           "full_name": "github"
         }
@@ -703,13 +716,13 @@
         }
       },
       "sketch": {
-        "version": "71.2,115329",
+        "version": "72,124316",
         "options": {
           "full_name": "sketch"
         }
       },
       "slack": {
-        "version": "4.15.0",
+        "version": "4.16.0",
         "options": {
           "full_name": "slack"
         }
@@ -721,7 +734,7 @@
         }
       },
       "visual-studio-code": {
-        "version": "1.55.2",
+        "version": "1.56.0",
         "options": {
           "full_name": "visual-studio-code"
         }
@@ -745,9 +758,15 @@
         }
       },
       "visual-studio-code-insiders": {
-        "version": "1.56.0,b2d6cab998570dce35a80b0597758932cbfa7477",
+        "version": "1.57.0,a19565da7dfc739fa26e36aae96113e19fe3806f",
         "options": {
           "full_name": "visual-studio-code-insiders"
+        }
+      },
+      "font-hack-nerd-font": {
+        "version": "2.1.0",
+        "options": {
+          "full_name": "font-hack-nerd-font"
         }
       }
     }
@@ -755,9 +774,9 @@
   "system": {
     "macos": {
       "big_sur": {
-        "HOMEBREW_VERSION": "3.1.5-2-g302087a",
+        "HOMEBREW_VERSION": "3.1.5-146-g64b6846",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "5a0721783a5e8d6709340be6331d978950c68320",
+        "Homebrew/homebrew-core": "5741ae3fecc5cabeff83576afcbcd68224ab6c76",
         "CLT": "12.4.0.0.1.1610135815",
         "Xcode": "12.0",
         "macOS": "11.2.3"
